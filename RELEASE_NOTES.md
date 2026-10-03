@@ -22,6 +22,7 @@
 - **Version Code**: `1`
 - **Version Name**: `1.0.0`
 - **Target SDK**: Android 14 (API 34)
-- **Min SDK**: Android 8.0 (API 26)
-- **Asset**: `Aruack-Music-v1.0.0.apk`
-- **SHA-256**: `5BAE861795CA836D9696CB9801BE3763FB5DF39D74F63B69A435B014EB8518B0`
+- **Assets**:
+  - `Aruack-Music-v1.0.0.apk` (Standard Android APK installer)
+  - `Aruack-Music-v1.0.0-Magisk-Recovery.zip` (Flashable via TWRP/OrangeFox Recovery & Magisk/KernelSU/APatch Module)
+- **SHA-256 (APK)**: `5BAE861795CA836D9696CB9801BE3763FB5DF39D74F63B69A435B014EB8518B0`
