@@ -1,12 +1,11 @@
-# Aruack Music - Magisk Installer
-ui_print "****************************************"
-ui_print "*            ARUACK MUSIC              *"
-ui_print "*   Serverless, Legal, Ad-Free Player  *"
-ui_print "****************************************"
-ui_print "- Installing Aruack Music system priv-app..."
+SKIPUNZIP=0
 
-# Set permissions
+ui_print "************************************"
+ui_print "       Aruack Music v1.0.1          "
+ui_print "   Your Music. Your Way. - System   "
+ui_print "************************************"
+
 set_perm_recursive $MODPATH 0 0 0755 0644
-set_perm_recursive $MODPATH/system/priv-app/AruackMusic 0 0 0755 0644
+set_perm $MODPATH/system/priv-app/AruackMusic/AruackMusic.apk 0 0 0644
 
-ui_print "- Installation complete! Reboot to apply."
+ui_print "- Installation complete! Please reboot."

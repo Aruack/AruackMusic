@@ -1,61 +1,30 @@
 #!/sbin/sh
-# Dual-Mode Installer for Magisk / KernelSU and Custom Recovery (TWRP / OrangeFox)
+
+#################
+# Magisk Module #
+#################
 
 OUTFD=$2
 ZIPFILE=$3
 
-ui_print() {
-  if [ "$OUTFD" != "" ]; then
-    echo "ui_print $1" > /proc/self/fd/$OUTFD
-    echo "ui_print" > /proc/self/fd/$OUTFD
-  else
-    echo "$1"
-  fi
+# Load utility functions
+if [ -f /data/adb/magisk/util_functions.sh ]; then
+  . /data/adb/magisk/util_functions.sh
+else
+  # Recovery mode fallback
+  require_new_magisk() {
+    ui_print "*******************************"
+    ui_print " Please install Magisk v20.4+! "
+    ui_print "*******************************"
+    exit 1
+  }
+fi
+
+# Execute module installer
+install_module() {
+  ui_print "- Installing Aruack Music System Priv-App"
 }
 
-ui_print "****************************************"
-ui_print "*            ARUACK MUSIC              *"
-ui_print "*     System App & Magisk Module       *"
-ui_print "****************************************"
-
-# Check if running in Magisk or Recovery
-if [ -f /data/adb/magisk/util_functions.sh ]; then
-  ui_print "- Magisk environment detected"
-  # Standard Magisk module installation flow
-  . /data/adb/magisk/util_functions.sh
-  install_module
-  exit 0
-fi
-
-# Fallback: Custom Recovery (TWRP / OrangeFox) system installation
-ui_print "- Custom Recovery detected. Mounting partitions..."
-
-mount /system 2>/dev/null
-mount /system_root 2>/dev/null
-mount -o rw,remount /system 2>/dev/null
-mount -o rw,remount /system_root 2>/dev/null
-
-TARGET_DIR="/system/priv-app/AruackMusic"
-if [ -d "/system_root/system/priv-app" ]; then
-  TARGET_DIR="/system_root/system/priv-app/AruackMusic"
-fi
-
-ui_print "- Installing to $TARGET_DIR..."
-mkdir -p "$TARGET_DIR"
-
-# Extract APK from zip
-unzip -o "$ZIPFILE" "system/priv-app/AruackMusic/AruackMusic.apk" -d /tmp/aruack_extracted 2>/dev/null
-
-if [ -f /tmp/aruack_extracted/system/priv-app/AruackMusic/AruackMusic.apk ]; then
-  cp -f /tmp/aruack_extracted/system/priv-app/AruackMusic/AruackMusic.apk "$TARGET_DIR/AruackMusic.apk"
-  chmod 0755 "$TARGET_DIR"
-  chmod 0644 "$TARGET_DIR/AruackMusic.apk"
-  chown -R 0:0 "$TARGET_DIR"
-  rm -rf /tmp/aruack_extracted
-  ui_print "- Aruack Music installed successfully!"
-else
-  ui_print "! Failed to extract AruackMusic.apk"
-fi
-
-ui_print "- Done! Reboot your device."
-exit 0
+export ZIPFILE
+export OUTFD
+exec /data/adb/magisk/busybox ash -c "$(unzip -p "$ZIPFILE" module.prop >/dev/null 2>&1 && unzip -p "$ZIPFILE" customize.sh)"

@@ -3,6 +3,8 @@
 *.aar
 *.ap_
 *.aab
+*.zip
+release_assets/
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -20,27 +22,32 @@ build/
 *.iml
 .DS_Store
 
-# Local configuration file (contains local paths and optional API keys)
+# Local configuration files (contains local paths, secrets and API keys)
 local.properties
+.env
+.env.*
+keystore.properties
 
 # Log files
 *.log
 
-# Android Studio Navigation editor temp files
+# Android Studio temp files
 .navigation/
-
-# Android Studio captures folder
 captures/
 
-# IntelliJ
-*.iws
-*.ipr
-.idea/caches/
-.idea/libraries/
-
-# Keystore files
+# Keystore & private key files
 *.jks
 *.keystore
+*.p12
+*.pem
+*.key
 
-# Google Services (if any ever added)
+# Google Services
 google-services.json
+
+# Python virtual environments (YouTube Service)
+__pycache__/
+*.pyc
+venv/
+env/
+.pytest_cache/

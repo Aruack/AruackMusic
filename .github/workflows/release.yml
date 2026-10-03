@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build:
-    name: Build APK & Flashable Zip
+    name: Build & Verify Release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -35,27 +35,24 @@ jobs:
       - name: Make Gradle Wrapper Executable
         run: chmod +x ./gradlew
 
-      - name: Create local.properties
+      - name: Create local.properties & Keystore
         run: |
           echo "JAMENDO_CLIENT_ID=${{ secrets.JAMENDO_CLIENT_ID || '84ce12ad' }}" >> local.properties
+          echo "SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID || 'ff184412120343ada935dbdbaf205475' }}" >> local.properties
+          mkdir -p app/keystore
+          keytool -genkeypair -v -keystore app/keystore/release.keystore -alias aruackrelease -keyalg RSA -keysize 2048 -validity 10000 -storepass aruackmusic2024 -keypass aruackmusic2024 -dname "CN=Aruack Music, OU=Mobile, O=ARUACK, L=Worldwide, ST=State, C=US"
+
+      - name: Run Unit Tests
+        run: ./gradlew test --stacktrace
 
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace
 
-      - name: Prepare Release Assets (APK & Magisk/Recovery ZIP)
+      - name: Prepare Release Assets
         run: |
           mkdir -p release_assets
           TAG="${{ github.ref_name || inputs.release_tag }}"
-          
-          # Copy Standalone APK
           cp app/build/outputs/apk/release/app-release.apk "release_assets/Aruack-Music-${TAG}.apk"
-          
-          # Build Flashable Magisk & Recovery ZIP
-          mkdir -p magisk_module/system/priv-app/AruackMusic
-          cp app/build/outputs/apk/release/app-release.apk magisk_module/system/priv-app/AruackMusic/AruackMusic.apk
-          cd magisk_module
-          zip -r "../release_assets/Aruack-Music-${TAG}-Magisk-Recovery.zip" *
-          cd ..
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -74,4 +71,3 @@ jobs:
           generate_release_notes: true
           files: |
             release_assets/*.apk
-            release_assets/*.zip

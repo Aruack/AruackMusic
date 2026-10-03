@@ -1,13 +1,15 @@
 # Aruack Music - Local Configuration Example
 # Copy this file to `local.properties` and add your local configuration.
-# DO NOT commit `local.properties` to version control.
+# DO NOT commit `local.properties` or keystores to version control.
 
 # Location of the Android SDK
-sdk.dir=C\:\\java\\android-sdk
+sdk.dir=C\:\\Users\\YourUsername\\AppData\\Local\\Android\\Sdk
 
-# Optional: Jamendo API Client ID for legal Creative Commons music streaming & discovery
-# Get a free developer client_id at: https://developer.jamendo.com/v3.0
-JAMENDO_CLIENT_ID=
+# Spotify Client ID for metadata & streaming discovery
+# Default client ID: ff184412120343ada935dbdbaf205475
+SPOTIFY_CLIENT_ID=ff184412120343ada935dbdbaf205475
 
-# Optional: Other legal public music provider keys (if required)
-# FREESOUND_API_KEY=
+# Optional: Release Signing Keystore overrides
+RELEASE_STORE_PASSWORD=aruackmusic2024
+RELEASE_KEY_ALIAS=aruackrelease
+RELEASE_KEY_PASSWORD=aruackmusic2024

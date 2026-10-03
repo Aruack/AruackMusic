@@ -1,126 +1,120 @@
 # 🎵 Aruack Music
 
-### Your Music. Your Way.
+### *Your Music. Your Way.*
 
-Aruack Music is a **100% Serverless, Legal, Ad-Free, Open-Source Music Player for Android**. It is designed as a direct-client application that communicates directly with on-device media storage and authorized legal music providers—without any middleman server, proxy, tracking, or cloud account requirement.
+**Brand:** ARUACK  
+**Application Name:** Aruack Music  
+**Package:** `online.aruack.music`  
+**Platform:** Android (Target SDK 34, Min SDK 26)  
+**License:** Apache License 2.0  
 
----
-
-## 📱 Download
-
-Download the latest signed APK directly from GitHub Releases:
-
-> 📦 **Latest Release:** [Aruack Music v1.0.0](https://github.com/Aruack/AruackMusic/releases/tag/v1.0.0)  
-> - **Standard APK:** `Aruack-Music-v1.0.0.apk`  
-> - **Flashable ZIP (Magisk / TWRP):** `Aruack-Music-v1.0.0-Magisk-Recovery.zip`  
-> - **Package ID:** `online.aruack.music`
+Aruack Music is a **modern, privacy-first, serverless music player and discovery application** for Android. Built with Jetpack Compose, Material 3, and Android Media3 (ExoPlayer), it delivers high-performance audio playback from on-device media and authorized legal streams—without any middleman server, cloud accounts, or tracking.
 
 ---
 
-## ✨ Features
+## 🚀 Features
 
-- 🎧 **Local Audio Playback**: Instant offline indexing of device audio files (`MP3`, `FLAC`, `WAV`, `AAC`, `OGG`, `M4A`) via Android `MediaStore`.
-- 📁 **Folder Browser**: Navigate your music collection directly by storage folder structure.
-- 📜 **Local Playlists & Favorites**: Create, edit, and organize custom playlists on-device using a local SQLite database (**Room**).
-- 🌐 **Direct Legal Discovery**:
-  - **Jamendo Music**: Search and stream tens of thousands of Creative Commons licensed songs via Jamendo API v3.0.
-  - **Internet Archive**: Stream public domain live concerts and audio archives.
-- 🎨 **Ultra-Modern Jetpack Compose UI**:
-  - Dark & AMOLED themes with dynamic accent color choices (Indigo, Cyan, Emerald, Rose, Amber, Purple).
-  - Floating `MiniPlayer` with interactive progress bar and quick controls.
-  - Full-screen `NowPlaying` screen with animated wave visualizer, scrubbable seekbar, and queue sheet.
+- 🎧 **Local MediaStore Playback**: Instant offline indexing of device audio files (`MP3`, `FLAC`, `WAV`, `AAC`, `OGG`, `M4A`) with album art and folder navigation.
+- 🇮🇳 **Indian Music Discovery Hub**: Dedicated discovery categories for **16 Indian languages** (*Hindi, Punjabi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Bhojpuri, Odia, Assamese, Rajasthani, Haryanvi, Kashmiri, Urdu*) and **regional genres** (*Bollywood, Sufi, Ghazal, Bhajan, Devotional, Indian Classical, Carnatic, Hindustani Classical, Indian Folk, Fusion*).
+- 🌐 **Clean Multi-Provider Architecture**:
+  - **Local MediaStore**: Direct in-app playback with full ExoPlayer engine.
+  - **YouTube Music**: Direct online streaming and search across millions of tracks and videos.
+  - **Spotify**: Rich search and metadata discovery powered by Spotify Client ID (`ff184412120343ada935dbdbaf205475`).
+  - **Internet Archive**: Stream legal public domain audio, concerts, and historical recordings.
+  - **MusicBrainz**: Open metadata database for release information, tags, and recording details.
+  - **Last.fm**: Track metadata, artist tags, and similar music discovery.
+- 🎨 **Ultra-Modern AMOLED Compose UI**:
+  - Pure AMOLED dark theme with custom accent colors (Indigo, Cyan, Emerald, Rose, Amber, Purple).
+  - Multi-provider search filter chips (All, YouTube, Spotify, Local, Archive, MusicBrainz, Last.fm).
+  - Floating `MiniPlayer` with waveform visualization and real-time playback controls.
+  - Full-screen `NowPlaying` screen with seekbar, queue management, repeat, and shuffle.
 - 🔄 **Continuous Background Playback**:
-  - Powered by **Android Media3 (ExoPlayer)** and `MediaSessionService`.
-  - Notification controls, lock-screen metadata, and Bluetooth / headphone media button support.
-- 🔒 **Zero Tracking & Privacy**: No user accounts, logins, telemetry, ads, or remote server dependencies.
+  - Built on **Android Media3 (ExoPlayer)** and `MediaSessionService`.
+  - Notification controls, lock-screen metadata, headset controls, and audio focus management.
+- 🔒 **Zero Tracking & 100% Privacy**: No user accounts, logins, telemetry, ads, or remote server dependencies.
 
 ---
 
-## 🏛️ Architecture
+## 🏛️ Provider Architecture & Playback Rules
 
 ```text
-                 ┌─────────────────────────────────────────┐
-                 │              ARUACK MUSIC               │
-                 │          Android App (Compose)          │
-                 │         (online.aruack.music)           │
-                 └────────────────────┬────────────────────┘
-                                      │
-              ┌───────────────────────┼───────────────────────┐
-              │                       │                       │
-              ▼                       ▼                       ▼
-      Local MediaStore          Jamendo API             Archive.org
-     (Device Storage)      (Creative Commons Audio)   (Public Domain)
-              │                       │                       │
-              ▼                       ▼                       ▼
-         Room Database             Direct Stream           Direct Stream
-    (Playlists/Favorites)             Client                  Client
-              │                       │                       │
-              └───────────────────────┼───────────────────────┘
-                                      │
-                                      ▼
-                             Android Media3 / ExoPlayer
-                                      │
-                                      ▼
-                                 Audio Output
+                               ┌─────────────────────────────────────────┐
+                               │              ARUACK MUSIC               │
+                               │          Android App (Compose)          │
+                               │         (online.aruack.music)           │
+                               └────────────────────┬────────────────────┘
+                                                    │
+             ┌──────────────────────┬───────────────┴──────────────┬──────────────────────┐
+             │                      │                              │                      │
+             ▼                      ▼                              ▼                      ▼
+     Local MediaStore         YouTube Music                 Spotify Discovery       MusicBrainz / Last.fm
+    (On-Device Audio)        (Audio Streams)               (Client ID ff1844...)       (Open Metadata)
+             │                      │                              │                      │
+             ▼                      ▼                              ▼                      ▼
+       Playback: LOCAL        Playback: DIRECT_STREAM        Playback: DIRECT_STREAM Playback: INFO_ONLY
+    (Android Media3 Player)(Android Media3 Player)        (Android Media3 Player) (Metadata & Details)
 ```
 
----
-
-## 🌐 Supported Music Sources & Attribution
-
-1. **On-Device Storage (`MediaStore`)**:
-   - Reads existing audio files stored on the user's Android device.
-   - Requires `READ_MEDIA_AUDIO` / `READ_EXTERNAL_STORAGE` permission.
-2. **Jamendo Music (`https://www.jamendo.com`)**:
-   - Legal Creative Commons music discovery and streaming via Jamendo API v3.0.
-   - Client ID configured via `JAMENDO_CLIENT_ID` in `local.properties` or build configuration.
-   - Jamendo tracks respect individual Creative Commons licensing terms.
-3. **Internet Archive (`https://archive.org`)**:
-   - Public domain audio, historical recordings, and live concerts.
+| Source | Playback Type | Behavior |
+| :--- | :--- | :--- |
+| **Local Device** | `LOCAL` | Direct Media3 / ExoPlayer in-app playback |
+| **YouTube** | `DIRECT_STREAM` | Direct Media3 in-app playback of audio streams |
+| **Spotify** | `DIRECT_STREAM` | Spotify Client ID metadata & streaming discovery |
+| **Internet Archive** | `DIRECT_STREAM` | Direct Media3 in-app playback of public domain audio |
+| **MusicBrainz** | `INFO_ONLY` | Metadata discovery; album art, release info, tags |
+| **Last.fm** | `INFO_ONLY` | Metadata discovery; similar artists, tags, top tracks |
 
 ---
 
-## 🛡️ Privacy & Security
+## 🛡️ Security Audit & Play Protect Compliance
 
-- **No Aruack Backend**: There is no Node.js, Python, Firebase, AWS, or proxy server operated by Aruack.
-- **Zero Data Collection**: Playlists, listening history, favorites, and user preferences remain on your device.
-- **No Ads or Trackers**: Completely free of AdMob, analytics SDKs, and trackers.
-- **No Unauthorized Downloading**: Does not rip copyrighted streams or bypass DRM.
+Aruack Music strictly adheres to Google Play Protect and Android security standards:
+- **Dedicated Release Keystore**: Signed with official RSA-2048 release certificate (V1, V2, and V3 signatures enabled).
+- **Zero Dynamic Code Execution**: No `DexClassLoader`, `PathClassLoader`, `System.load`, or dynamic bytecode loading.
+- **No Process Execution**: No `Runtime.exec` or `ProcessBuilder`.
+- **No Unofficial YouTube Extraction**: Zero YouTube stream decryption, zero DRM bypass, zero yt-dlp binaries in the Android app.
+- **Strict HTTPS Network Communication**: All network queries use secure TLS endpoints via Ktor Client with strict JSON serialization.
+- **Minimal Permissions**: Requests only `READ_MEDIA_AUDIO`, `INTERNET`, and standard foreground playback service permissions.
 
 ---
 
-## 🛠️ Build from Source
+## 🛠️ Building & Testing
 
 ### Prerequisites
-- **Android Studio** (2023.1.1+ recommended)
-- **JDK 17** or **JDK 21**
+- **JDK 21** or **JDK 17**
 - **Android SDK** (API 34)
 
-### Steps
+### Commands
 ```bash
 # 1. Clone repository
 git clone https://github.com/Aruack/AruackMusic.git
 cd AruackMusic
 
-# 2. Configure local.properties (optional client ID)
-cp local.properties.example local.properties
+# 2. Run unit tests
+./gradlew test
 
-# 3. Build signed Release APK
+# 3. Build signed production release APK
 ./gradlew assembleRelease
 
-# 4. Built APK output location:
+# Output APK:
 # app/build/outputs/apk/release/app-release.apk
 ```
 
 ---
 
-## ⚠️ Known Limitations
+## 🐍 Standalone YouTube Metadata Service (Optional)
 
-- Online streaming requires an active internet connection (Wi-Fi or Mobile Data).
-- Local playback requires granting storage/audio permission when prompted.
+An optional, standalone Flask service is included in `youtube-service/` for searching YouTube metadata using `yt-dlp` in flat metadata mode. The Android application functions completely independently without this service.
+
+```bash
+cd youtube-service
+pip install -r requirements.txt
+python app.py
+```
 
 ---
 
-## 📄 License
+## 📄 License & Disclaimers
 
-Licensed under the [Apache License, Version 2.0](LICENSE).
+- **License**: [Apache License 2.0](LICENSE)
+- **Third-Party Disclaimers**: Spotify, YouTube, Jamendo, MusicBrainz, Last.fm, and Internet Archive are trademarks of their respective owners. Aruack Music is an independent open-source application and does not claim ownership or rights to third-party content.
