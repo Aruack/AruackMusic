@@ -10,7 +10,7 @@ Aruack Music is a **100% Serverless, Legal, Ad-Free, Open-Source Music Player fo
 
 Download the latest signed APK directly from GitHub Releases:
 
-> 📦 **Latest Release:** [Aruack Music v1.0.0](https://github.com/your-username/aruack-music/releases/tag/v1.0.0)  
+> 📦 **Latest Release:** [Aruack Music v1.0.0](https://github.com/aruack/aruack-music/releases/tag/v1.0.0)  
 > **Asset Name:** `Aruack-Music-v1.0.0.apk`  
 > **Package ID:** `online.aruack.music`
 
@@ -98,7 +98,7 @@ Download the latest signed APK directly from GitHub Releases:
 ### Steps
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-username/aruack-music.git
+git clone https://github.com/aruack/aruack-music.git
 cd aruack-music
 
 # 2. Configure local.properties (optional client ID)
