@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Include user data for backup -->
+    <include domain="database" path="aruack_music.db" />
+    <include domain="sharedpref" path="aruack_user_preferences.preferences_pb" />
+</full-backup-content>
+        

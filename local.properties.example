@@ -1,0 +1,13 @@
+# Aruack Music - Local Configuration Example
+# Copy this file to `local.properties` and add your local configuration.
+# DO NOT commit `local.properties` to version control.
+
+# Location of the Android SDK
+sdk.dir=C\:\\java\\android-sdk
+
+# Optional: Jamendo API Client ID for legal Creative Commons music streaming & discovery
+# Get a free developer client_id at: https://developer.jamendo.com/v3.0
+JAMENDO_CLIENT_ID=
+
+# Optional: Other legal public music provider keys (if required)
+# FREESOUND_API_KEY=
